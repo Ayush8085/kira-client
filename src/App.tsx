@@ -1,13 +1,29 @@
-import { Button } from "./components/ui/button"
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import { Login } from './pages/Login';
+import { Signup } from './pages/Signup';
+import { PageNotFound } from './pages/PageNotFound';
+import { PrivateRoutes } from './utils/PrivateRoutes';
 
 function App() {
 
   return (
     <div className="">
-      <div className="text-4xl text-red-600">Hello</div>
-      <div className="">
-        <Button variant="destructive">Click me</Button>
-      </div>
+      <BrowserRouter>
+        <Routes>
+          {/* PRIVATE ROUTES */}
+          <Route element={<PrivateRoutes />}>
+            <Route path="/" element={<Home />} />
+          </Route>
+
+          {/* PUBLIC ROUTES */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
+          {/* PAGE NOT FOUND */}
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }
