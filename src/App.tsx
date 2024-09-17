@@ -4,6 +4,10 @@ import { Login } from './pages/Login';
 import { Signup } from './pages/Signup';
 import { PageNotFound } from './pages/PageNotFound';
 import { PrivateRoutes } from './utils/PrivateRoutes';
+import axios from 'axios';
+
+export const BASE_URL = "http://localhost:5000/api/v1";
+axios.defaults.withCredentials = true;
 
 function App() {
 
