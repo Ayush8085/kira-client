@@ -3,7 +3,7 @@ import { Button } from '../ui/button'
 import { Github } from 'lucide-react'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { setCredentials } from '@/features/auth/authSlice';
+import { setAccessToken, setCredentials } from '@/features/auth/authSlice';
 import { Loading } from '@/utils/Loading';
 import { loginUser, registerUser } from '@/services/authAPI';
 
@@ -23,10 +23,9 @@ export const AuthForm = ({ h1_text, description, form_type }: { h1_text: string,
     e.preventDefault();
     try {
       setIsLoading(true);
-      const data = await loginUser(inputs);
-      await dispatch(setCredentials(data));
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
+      const data = await loginUser(inputs);      
+      await dispatch(setCredentials(data.user));
+      await dispatch(setAccessToken(data.accessToken));
       setIsLoading(false);
       navigate("/");
     }
@@ -44,9 +43,8 @@ export const AuthForm = ({ h1_text, description, form_type }: { h1_text: string,
     }
     try {
       const data = await registerUser(inputs);
-      await dispatch(setCredentials(data));
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
+      await dispatch(setCredentials(data.user));
+      await dispatch(setAccessToken(data.accessToken));
       setIsLoading(false);
       navigate("/");
     }

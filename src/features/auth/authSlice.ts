@@ -4,28 +4,30 @@ const authSlice = createSlice({
     name: 'auth',
     initialState: {
         user: null,
-        accessToken: localStorage.getItem("accessToken") || null,
+        isLoggedIn: false,
+        accessToken: null,
     },
     reducers: {
         setCredentials: (state, action) => {
-            const { user, accessToken } = action.payload;
-            state.user = user;
-            state.accessToken = accessToken;
+            state.user = action.payload;
+            
+        },
+        setIsLoggedIn: (state, action) => {
+            state.isLoggedIn = action.payload;
         },
         setAccessToken: (state, action) => {
-            const { accessToken } = action.payload;
-            state.accessToken = accessToken;
+            state.accessToken = action.payload;
         },
         logOut: (state, action) => {
             state.user = null;
-            state.accessToken = null;
         }
     }
 })
 
-export const { setCredentials, setAccessToken, logOut } = authSlice.actions;
+export const { setCredentials, setAccessToken, setIsLoggedIn, logOut } = authSlice.actions;
 
 export const authReducer = authSlice.reducer;
 
 export const selectCurrentUser = (state: any) => state.auth.user;
-export const selectCurrentToken = (state: any) => state.auth.accessToken;
+export const selectIsLoggedIn = (state: any) => state.auth.isLoggedIn;
+export const selectAccessToken = (state: any) => state.auth.accessToken;

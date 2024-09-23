@@ -1,13 +1,13 @@
 import { axiosPrivate } from '@/api/axios'
 import { useRefreshToken } from './useRefreshToken';
-import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { selectCurrentToken } from '@/features/auth/authSlice';
 import { HTTP_FORBIDDEN } from '@/utils/http.status';
+import { useSelector } from 'react-redux';
+import { selectAccessToken } from '@/features/auth/authSlice';
 
 export const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
-    const accessToken = useSelector(selectCurrentToken);
+    const accessToken = useSelector(selectAccessToken);
 
     useEffect(() => {
         const requestInterceptor = axiosPrivate.interceptors.request.use(

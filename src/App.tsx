@@ -5,28 +5,31 @@ import { Signup } from './pages/Signup';
 import { PageNotFound } from './pages/PageNotFound';
 import { PrivateRoutes } from './utils/PrivateRoutes';
 import axios from 'axios';
+import AuthProvider from './context/AuthProvider';
 
 export const BASE_URL = "http://localhost:5000/api/v1";
 axios.defaults.withCredentials = true;
 
 function App() {
-
   return (
     <div className="">
       <BrowserRouter>
-        <Routes>
-          {/* PRIVATE ROUTES */}
-          <Route element={<PrivateRoutes />}>
-            <Route path="/" element={<Home />} />
-          </Route>
+        <AuthProvider>
 
-          {/* PUBLIC ROUTES */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Routes>
+            {/* PRIVATE ROUTES */}
+            <Route element={<PrivateRoutes />}>
+              <Route path="/" element={<Home />} />
+            </Route>
 
-          {/* PAGE NOT FOUND */}
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
+            {/* PUBLIC ROUTES */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+
+            {/* PAGE NOT FOUND */}
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </div>
   )
