@@ -30,8 +30,8 @@ const Home = () => {
     setIsLoading(true);
     await logoutUser();
     console.log("LOGOUT");
-    navigate("/login");
     setIsLoading(false);
+    navigate("/login");
   }
 
   return (
