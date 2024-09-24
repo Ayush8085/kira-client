@@ -8,9 +8,6 @@ export const useRefreshToken = () => {
     const refresh = async () => {
         const data = await getRefreshToken();
         dispatch(setAccessToken(data.accessToken));
-        console.log("before: ", localStorage.getItem("accessToken"));
-        localStorage.setItem("accessToken", data.accessToken);
-        console.log("after: ", localStorage.getItem("accessToken"));
         return data.accessToken;
     }
 

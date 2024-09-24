@@ -1,4 +1,4 @@
-import { selectAccessToken, selectIsLoggedIn, setAccessToken, setCredentials, setIsLoggedIn } from '@/features/auth/authSlice';
+import { selectAccessToken, setAccessToken, setCredentials, setIsLoggedIn } from '@/features/auth/authSlice';
 import { useAxiosPrivate } from '@/hooks/useAxiosPrivate';
 import { getLoggedInUser } from '@/services/authAPI';
 import React, { createContext, useEffect, useState } from 'react';
@@ -20,17 +20,16 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             try {
                 const data = await getLoggedInUser(axiosPrivate);
                 if (data) {
-                    console.log('privateRoute: ', data);
                     dispatch(setCredentials(data.user));
                     dispatch(setAccessToken(data.accessToken));
                     dispatch(setIsLoggedIn(data.isLoggedIn));
-                    console.log("AFTER: ", accessToken);
                     navigate('/');
                 } else {
                     console.error('No data returned from getLoggedInUser');
                 }
             } catch (error) {
                 console.error('Error getting logged in user: ', error);
+                navigate('/login');
             } finally {
                 setIsLoading(false);
             }

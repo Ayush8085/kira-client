@@ -40,24 +40,19 @@ export const logoutUser = async () => {
 // ------------ GET LOGGED IN USER ----------------
 export const getLoggedInUser = async (axiosPrivate: any) => {
     try {
-        const response = await axiosPrivate.get(`${BASE_URL}/auth/get-log-in-user`, {
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-            }
-        });
+        const response = await axiosPrivate.get(`${BASE_URL}/auth/get-log-in-user`);
         console.log("get-log-in-user-data", response.data);
         return response.data;
     }
     catch (err) {
         console.error(err);
-        window.location.href = "/login";
     }
 }
 
 // -------------- REFRESH TOKEN ----------------
 export const getRefreshToken = async () => {
     try {
-        const response = await axios.post(`${BASE_URL}/auth/refresh-token`, { refreshToken: localStorage.getItem("refreshToken") });
+        const response = await axios.post(`${BASE_URL}/auth/refresh-token`);
         console.log("get-refresh-token-data", response.data);
         return response.data;
     }
