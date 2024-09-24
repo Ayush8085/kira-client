@@ -20,6 +20,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             try {
                 const data = await getLoggedInUser(axiosPrivate);
                 if (data) {
+                    if (!data.isLoggedIn) {
+                        navigate('/login');
+                    }
                     dispatch(setCredentials(data.user));
                     dispatch(setAccessToken(data.accessToken));
                     dispatch(setIsLoggedIn(data.isLoggedIn));
