@@ -23,7 +23,12 @@ export const AuthForm = ({ h1_text, description, form_type }: { h1_text: string,
     e.preventDefault();
     try {
       setIsLoading(true);
-      const data = await loginUser(inputs);      
+      const data = await loginUser(inputs);
+      if (!data) {
+        setIsLoading(false);
+        console.log("Invalid credentials");
+        navigate("/login");
+      }
       await dispatch(setCredentials(data.user));
       await dispatch(setAccessToken(data.accessToken));
       setIsLoading(false);
@@ -43,6 +48,11 @@ export const AuthForm = ({ h1_text, description, form_type }: { h1_text: string,
     }
     try {
       const data = await registerUser(inputs);
+      if (!data) {
+        setIsLoading(false);
+        console.log("Invalid credentials");
+        navigate("/signup");
+      }
       await dispatch(setCredentials(data.user));
       await dispatch(setAccessToken(data.accessToken));
       setIsLoading(false);
