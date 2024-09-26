@@ -21,3 +21,14 @@ export const getProjectsOfUser = async (axiosPrivate: any) => {
         console.error(err);
     }
 }
+
+// ------------- GET PROJECT ---------------
+export const getProject = async (axiosPrivate: any, id: string) => {
+    try {
+        const response = await axiosPrivate.get(`${BASE_URL}/projects/get/${id}`);
+        return response.data;
+    }
+    catch (err) {
+        console.error(err);
+    }
+}

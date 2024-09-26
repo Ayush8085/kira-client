@@ -1,15 +1,17 @@
 import { Navbar } from "@/components/common/Navbar";
-import { selectProjects, setProjects } from "@/features/projectSlice";
+import { selectProjects, setProject, setProjects } from "@/features/projectSlice";
 import { useAxiosPrivate } from "@/hooks/useAxiosPrivate";
-import { getProjectsOfUser } from "@/services/projectAPI";
+import { getProject, getProjectsOfUser } from "@/services/projectAPI";
 import { Loading } from "@/utils/Loading";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const projects: Array<any> = useSelector(selectProjects);
 
   useEffect(() => {
@@ -28,6 +30,19 @@ const Home = () => {
     getAllProjects();
   }, [dispatch, axiosPrivate]);
 
+  const getProjectHere = async (projectId: string) => {
+    setIsLoading(true);
+    try {
+      const data = await getProject(axiosPrivate, projectId);
+      dispatch(setProject(data.project));
+      navigate(`/projects/${projectId}`);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   if (isLoading) {
     return (
       <Loading />
@@ -37,7 +52,7 @@ const Home = () => {
   return (
     <div className="">
       {/* NAVBAR */}
-      <Navbar />
+      {/* <Navbar /> */}
 
       {/* PROJECTS */}
       <div className="overflow-x-auto">
@@ -52,7 +67,7 @@ const Home = () => {
           </thead>
           <tbody className="text-slate-600 text-sm font-normal">
             {projects.map((item, idx) => (
-              <tr key={item.id} className="border-b border-gray-200 hover:bg-slate-100 cursor-pointer">
+              <tr key={item.id} className="border-b border-gray-200 hover:bg-slate-100 cursor-pointer" onClick={() => getProjectHere(item.id)}>
                 <td className="py-3 px-6">{idx + 1}</td>
                 <td className="py-3 px-6">{item.title}</td>
                 <td className="py-3 px-6">{item.key}</td>

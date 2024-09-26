@@ -18,14 +18,18 @@ import {
 import React, { useState } from "react"
 import { logoutUser } from "@/services/authAPI";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logOut } from "@/features/auth/authSlice";
 
 export function ProfileDowndown({ children }: { children: React.ReactNode }) {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const logout = async () => {
         try {
             await logoutUser();
+            dispatch(logOut(null));
             navigate("/login");
         } catch (error) {
             console.error(error);
@@ -33,7 +37,7 @@ export function ProfileDowndown({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 {children}
             </DropdownMenuTrigger>
