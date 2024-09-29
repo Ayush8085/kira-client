@@ -1,4 +1,3 @@
-import { Navbar } from "@/components/common/Navbar";
 import { selectProjects, setProject, setProjects } from "@/features/projectSlice";
 import { useAxiosPrivate } from "@/hooks/useAxiosPrivate";
 import { getProject, getProjectsOfUser } from "@/services/projectAPI";
