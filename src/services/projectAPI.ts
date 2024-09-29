@@ -32,3 +32,15 @@ export const getProject = async (axiosPrivate: any, id: string) => {
         console.error(err);
     }
 }
+
+// ------------- DELETE PROJECT ---------------
+export const deleteProject = async (axiosPrivate: any, id: string) => {
+    try {
+        const response = await axiosPrivate.delete(`${BASE_URL}/projects/delete/${id}`);
+        console.log("delete-project-response: ", response.data);
+        return response.data;
+    }
+    catch (err) {
+        console.error(err);
+    }
+}

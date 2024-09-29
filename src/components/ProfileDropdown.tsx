@@ -22,7 +22,6 @@ import { useDispatch } from "react-redux";
 import { logOut } from "@/features/auth/authSlice";
 
 export function ProfileDowndown({ children }: { children: React.ReactNode }) {
-    const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
