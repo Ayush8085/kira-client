@@ -1,11 +1,12 @@
 import { CreateIssueDialog } from "@/components/CreateIssueDialog";
 import { IssueColumn } from "@/components/IssueColumn";
 import { Button } from "@/components/ui/button";
+import { DragContext } from "@/context/DragProvider";
 import { setIssues } from "@/features/issueSlice";
 import { useAxiosPrivate } from "@/hooks/useAxiosPrivate";
 import { getIssues } from "@/services/issueAPI";
 import { Loading } from "@/utils/Loading";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -14,6 +15,7 @@ export const Project = () => {
     const axiosPrivate = useAxiosPrivate();
     const dispatch = useDispatch();
     const { projectId } = useParams();
+    const { activeCard } = useContext(DragContext);
 
     useEffect(() => {
         getIssuesHere();

@@ -10,6 +10,7 @@ import { Project } from './pages/Project';
 import { Navbar } from './components/common/Navbar';
 import { selectIsLoggedIn } from './features/auth/authSlice';
 import { useSelector } from 'react-redux';
+import { DragProvider } from './context/DragProvider';
 
 export const BASE_URL = "http://localhost:5000/api/v1";
 axios.defaults.withCredentials = true;
@@ -21,22 +22,23 @@ function App() {
     <div className="">
       <BrowserRouter>
         <AuthProvider>
-          {auth && <Navbar />}
+          <DragProvider>
+            {auth && <Navbar />}
+            <Routes>
+              {/* PRIVATE ROUTES */}
+              <Route element={<PrivateRoutes />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/projects/:projectId" element={<Project />} />
+              </Route>
 
-          <Routes>
-            {/* PRIVATE ROUTES */}
-            <Route element={<PrivateRoutes />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/projects/:projectId" element={<Project />} />
-            </Route>
+              {/* PUBLIC ROUTES */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
 
-            {/* PUBLIC ROUTES */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-
-            {/* PAGE NOT FOUND */}
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
+              {/* PAGE NOT FOUND */}
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </DragProvider>
         </AuthProvider>
       </BrowserRouter>
     </div>
