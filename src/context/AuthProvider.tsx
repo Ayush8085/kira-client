@@ -1,6 +1,7 @@
 import { selectAccessToken, setAccessToken, setCredentials, setIsLoggedIn } from '@/features/auth/authSlice';
 import { useAxiosPrivate } from '@/hooks/useAxiosPrivate';
 import { getLoggedInUser } from '@/services/authAPI';
+import { Loading } from '@/utils/Loading';
 import React, { createContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -39,6 +40,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
         userData();
     }, [dispatch, axiosPrivate, accessToken]);
+
+    if (isLoading) {
+        return <Loading />
+    }
 
     return (
         <AuthContext.Provider value={{}}>
