@@ -15,12 +15,17 @@ import { Loading } from "@/utils/Loading"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Select, SelectGroup, SelectItem, SelectLabel, SelectContent, SelectTrigger, SelectValue } from "./ui/select"
+import { createIssue } from "@/services/issueAPI"
+import { useParams } from "react-router-dom"
+import { selectIssues, setIssues } from "@/features/issueSlice"
 
 export function CreateIssueDialog({ children }: { children: React.ReactNode }) {
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
+    const issues = useSelector(selectIssues);
     const axiosPrivate = useAxiosPrivate();
+    const { projectId } = useParams();
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -38,10 +43,30 @@ export function CreateIssueDialog({ children }: { children: React.ReactNode }) {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(formData);
-        if (formData.title === "" || formData.key === "") {
-            alert("Please fill in all fields");
-            return;
+        setIsLoading(true);
+        try {
+            if (formData.title === "" || formData.key === "") {
+                alert("Please fill in all required fields");
+                return;
+            }
+            console.log("FORM DATA: ", formData);
+            const data = await createIssue(axiosPrivate, projectId, formData);
+            console.log("HERLERLEKRE: ", data);
+            const newIssues = [...issues, data.issue];
+            dispatch(setIssues(newIssues));
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setIsLoading(false);
+            setFormData({
+                title: "",
+                description: "",
+                key: "",
+                status: "todo",
+            })
+            setOpen(false);
         }
+
     }
 
 
@@ -102,7 +127,7 @@ export function CreateIssueDialog({ children }: { children: React.ReactNode }) {
                         <Label htmlFor="username" className="text-right">
                             Status
                         </Label>
-                        <Select>
+                        <Select onValueChange={(value) => setFormData({ ...formData, status: value })}>
                             <SelectTrigger className="w-[180px]">
                                 <SelectValue placeholder="Select status" />
                             </SelectTrigger>
