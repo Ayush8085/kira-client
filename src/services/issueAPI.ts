@@ -43,3 +43,14 @@ export const deleteIssue = async (axiosPrivate: any, issueId: string) => {
         console.error(err);
     }
 };
+
+// ------------- UPDATE ISSUE ---------------
+export const updateIssue = async (axiosPrivate: any, issueId: string, data: any) => {
+    try {
+        const response = await axiosPrivate.put(`${BASE_URL}/issues/update/${issueId}`, data);
+        console.log("update-issue-response: ", response.data);
+        return response.data;
+    } catch (err) {
+        console.error(err);
+    }
+}
