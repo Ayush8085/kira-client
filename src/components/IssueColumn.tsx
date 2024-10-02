@@ -21,7 +21,7 @@ export const IssueColumn = ({ title, icon, status }: { title: string, icon: stri
                     issues.map((issue, index) => (
                         issue.status === status &&
                         <React.Fragment key={index}>
-                            <IssueCard title={issue.title} index={index} description={issue.description} />
+                            <IssueCard title={issue.title} index={index} issueId={issue.id} description={issue.description} />
                             <DropArea onDrop={() => onDrop(status, index + 1)} />
                         </React.Fragment>
                     ))

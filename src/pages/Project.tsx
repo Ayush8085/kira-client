@@ -47,7 +47,7 @@ export const Project = () => {
                     <Button className="bg-slate-500 hover:bg-slate-400">+ Create issue</Button>
                 </CreateIssueDialog>
             </div>
-            <div className="flex justify-evenly">
+            <div className="flex justify-center gap-4">
                 <IssueColumn title="Todo" icon={"🎯"} status="todo" />
                 <IssueColumn title="In progress" icon={"🌟"} status="inprogress" />
                 <IssueColumn title="Done" icon={"✅"} status="done" />
