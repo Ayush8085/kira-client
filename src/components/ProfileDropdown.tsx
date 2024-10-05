@@ -18,12 +18,13 @@ import {
 import React, { useState } from "react"
 import { logoutUser } from "@/services/authAPI";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logOut } from "@/features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut, selectCurrentUser } from "@/features/auth/authSlice";
 
 export function ProfileDowndown({ children }: { children: React.ReactNode }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const user = useSelector(selectCurrentUser);
 
     const logout = async () => {
         try {
@@ -41,7 +42,7 @@ export function ProfileDowndown({ children }: { children: React.ReactNode }) {
                 {children}
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem>

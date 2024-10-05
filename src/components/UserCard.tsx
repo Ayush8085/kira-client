@@ -42,7 +42,7 @@ export const UserCard = ({ user, userRole }: { user: any, userRole: string }) =>
               <DropdownMenuGroup>
                 <DropdownMenuItem textValue="admin" onClick={() => changeRoleHere('admin')}>Admin</DropdownMenuItem>
                 <DropdownMenuItem textValue="user" onClick={() => changeRoleHere('user')}>User</DropdownMenuItem>
-                {userRole === 'admin' || userRole === 'user' && <DropdownMenuItem textValue="other" onClick={() => changeRoleHere('other')}>Remove</DropdownMenuItem>}
+                {(userRole === 'admin' || userRole === 'user') && <DropdownMenuItem textValue="other" onClick={() => changeRoleHere('other')}>Remove</DropdownMenuItem>}
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
