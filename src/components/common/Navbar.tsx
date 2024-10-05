@@ -1,13 +1,17 @@
 import { Link } from "react-router-dom";
 import { ProfileDowndown } from "../ProfileDropdown";
+import { useSelector } from "react-redux";
+import { selectProject } from "@/features/projectSlice";
 
 export const Navbar = () => {
+  const project = useSelector(selectProject);
+
   return (
     <nav className="bg-slate-500 p-4 flex justify-between items-center">
       <div className="flex space-x-4">
         <Link to="/" className="text-slate-200 hover:text-gray-300">Home</Link>
-        <Link to="/issuess" className="text-slate-200 hover:text-gray-300">Issues</Link>
-        <Link to="users" className="text-slate-200 hover:text-gray-300">Users</Link>
+        {project && <Link to={`/projects/${project.id}`} className="text-slate-200 hover:text-gray-300">Issues</Link>}
+        {project && <Link to="/users" className="text-slate-200 hover:text-gray-300">Users</Link>}
       </div>
       <div className="flex items-center gap-4">
         <ProfileDowndown>

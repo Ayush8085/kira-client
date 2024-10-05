@@ -11,6 +11,7 @@ import { Navbar } from './components/common/Navbar';
 import { selectIsLoggedIn } from './features/auth/authSlice';
 import { useSelector } from 'react-redux';
 import { DragProvider } from './context/DragProvider';
+import { Users } from './pages/Users';
 
 export const BASE_URL = "http://localhost:5000/api/v1";
 axios.defaults.withCredentials = true;
@@ -29,6 +30,7 @@ function App() {
               <Route element={<PrivateRoutes />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/projects/:projectId" element={<Project />} />
+                <Route path="/users" element={<Users />} />
               </Route>
 
               {/* PUBLIC ROUTES */}

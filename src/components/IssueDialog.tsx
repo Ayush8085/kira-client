@@ -11,13 +11,18 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { deleteIssue, updateIssue } from '@/services/issueAPI'
 import { useAxiosPrivate } from '@/hooks/useAxiosPrivate'
 import { Loading } from '@/utils/Loading'
+import { CommentCard } from './CommentCard'
+import { createComment, deleteComment } from '@/services/commentAPI'
+import { selectComments, setComments } from '@/features/commentSlice'
 
 export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
     const [openEdit, setOpenEdit] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [commentValue, setCommentValue] = useState("");
     const axiosPrivate = useAxiosPrivate();
     const dispatch = useDispatch();
     const issues = useSelector(selectIssues);
+    const comments = useSelector(selectComments);
     const statusVal: Record<string, string> = {
         "todo": "Todo",
         "inprogress": "In Progress",
@@ -62,6 +67,33 @@ export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
             console.log(error);
         } finally {
             setIsLoading(false);
+        }
+    }
+
+    // HANDLE SUBMIT COMMENT
+    const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            console.log("commentValue: ", { "text": commentValue });
+            const data = await createComment(axiosPrivate, issue?.id, { "text": commentValue });
+            const newComments = comments.concat(data.comment);
+            dispatch(setComments(newComments));
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setCommentValue("");
+        }
+    }
+
+    // HANDLE DELETE COMMENT
+    const handleDeleteComment = async (comment: any) => {
+        try {
+            const data = await deleteComment(axiosPrivate, comment.id);
+            console.log("DELETE COMMENT: ", data);
+            const newComments = comments.filter((item) => item.id !== comment.id);
+            dispatch(setComments(newComments));
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -145,14 +177,19 @@ export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
                 </div>
 
                 {/* COMMENTS GOES HERE */}
-                <div className="">
+                <form className="" onSubmit={handleCommentSubmit}>
                     <Label className='mb-4'>
                         Activity
                     </Label>
-                    <Input placeholder='Add a comment...' />
-                </div>
+                    <Input value={commentValue} name='commentValue' onChange={(e) => setCommentValue(e.target.value)} placeholder='Add a comment...' />
+                </form>
 
                 {/* DISPLAY COMMENTS HERE */}
+                <div className="comments">
+                    {comments.map((comment) => (
+                        <CommentCard key={comment.id} comment={comment} handleDeleteComment={() => handleDeleteComment(comment)} />
+                    ))}
+                </div>
             </DialogContent>
         </Dialog>
     )

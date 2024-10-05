@@ -44,3 +44,25 @@ export const deleteProject = async (axiosPrivate: any, id: string) => {
         console.error(err);
     }
 }
+
+// ------------- GET PROJECT USER ---------------
+export const getProjectUsers = async (axiosPrivate: any, projectId: string) => {
+    try {
+        const response = await axiosPrivate.get(`${BASE_URL}/projects/get-project-users/${projectId}`);
+        return response.data;
+    }
+    catch (err) {
+        console.error(err);
+    }
+}
+
+// ------------- CHANGE ROLE ---------------
+export const changeRole = async (axiosPrivate: any, projectId: string, data: any) => {
+    try {
+        const response = await axiosPrivate.put(`${BASE_URL}/projects/change-role/${projectId}`, data);
+        return response.data;
+    }
+    catch (err) {
+        console.error(err);
+    }
+}
