@@ -54,3 +54,42 @@ export const updateIssue = async (axiosPrivate: any, issueId: string, data: any)
         console.error(err);
     }
 }
+
+// ------------- ATTACH TO ISSUE -------------
+export const attachToIssue = async (axiosPrivate: any, issueId: string, data: any) => {
+    try {
+        const response = await axiosPrivate.post(`${BASE_URL}/issues/attachment/${issueId}`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+        console.log("attach-issue-response: ", response.data);
+        return response.data;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// ------------- DOWNLOAD ATTACHMENT -------------
+export const downloadIssueAttachment = async (axiosPrivate: any, attachmentId: string) => {
+    try {
+        const response = await axiosPrivate.get(`${BASE_URL}/issues/attachment/${attachmentId}`, {
+            responseType: "blob",
+        });
+        console.log("download-attachment-response: ", response.data);
+        return response.data;
+    } catch (err) {
+        console.error(err);
+    }
+}
+ 
+// ------------- DELETE ATTACHMENT -------------
+export const deleteIssueAttachment = async(axiosPrivate: any, issueId: string, attachmentId: string) => {
+    try {
+        const response = await axiosPrivate.delete(`${BASE_URL}/issues/attachment/${issueId}/${attachmentId}`);
+        console.log("delete-attachment-response", response.data);
+        return response.data;
+    } catch (err) {
+        console.error(err);        
+    }
+}

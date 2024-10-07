@@ -1,11 +1,12 @@
 import { DragContext } from "@/context/DragProvider"
 import { useContext, useEffect } from "react"
 import { IssueDialog } from "./IssueDialog";
-import { selectIssues, setIssue } from "@/features/issueSlice";
+import { selectIssues, setAttachment, setIssue } from "@/features/issueSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useAxiosPrivate } from "@/hooks/useAxiosPrivate";
 import { getComments } from "@/services/commentAPI";
 import { setComments } from "@/features/commentSlice";
+import { getIssue } from "@/services/issueAPI";
 
 export const IssueCard = ({ title, index, description, issueId }: { title: string, index: number, description: string, issueId: string }) => {
     const { setActiveCard } = useContext(DragContext);
@@ -14,12 +15,11 @@ export const IssueCard = ({ title, index, description, issueId }: { title: strin
     const axiosPrivate = useAxiosPrivate();
     const issues = useSelector(selectIssues);
 
-    useEffect(() => {
-        getIssueHere();
-    }, [dispatch, axiosPrivate]);
-
     const getIssueHere = async () => {
-        dispatch(setIssue(issues[index]));
+        const data = await getIssue(axiosPrivate, issues[index].id);
+        console.log("THSI IS IT: ", data);
+        dispatch(setIssue(data.issue));
+        dispatch(setAttachment(data.attachment));
     }
 
     const getCommentsHere = async () => {

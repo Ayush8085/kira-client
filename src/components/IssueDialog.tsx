@@ -4,16 +4,17 @@ import { Dialog, DialogContent, DialogHeader, DialogTrigger } from './ui/dialog'
 import { Label } from './ui/label'
 import { Textarea } from './ui/textarea'
 import { DialogTitle } from '@radix-ui/react-dialog'
-import { selectIssue, selectIssues, setIssues } from '@/features/issueSlice'
+import { selectAttachment, selectIssue, selectIssues, setAttachment, setIssues } from '@/features/issueSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Input } from './ui/input'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select'
-import { deleteIssue, updateIssue } from '@/services/issueAPI'
+import { deleteIssue, deleteIssueAttachment, downloadIssueAttachment, updateIssue } from '@/services/issueAPI'
 import { useAxiosPrivate } from '@/hooks/useAxiosPrivate'
 import { Loading } from '@/utils/Loading'
 import { CommentCard } from './CommentCard'
 import { createComment, deleteComment } from '@/services/commentAPI'
 import { selectComments, setComments } from '@/features/commentSlice'
+import FileUpload from './FileUpload'
 
 export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
     const [openEdit, setOpenEdit] = useState(false);
@@ -23,6 +24,7 @@ export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
     const dispatch = useDispatch();
     const issues = useSelector(selectIssues);
     const comments = useSelector(selectComments);
+    const attachment = useSelector(selectAttachment);
     const statusVal: Record<string, string> = {
         "todo": "Todo",
         "inprogress": "In Progress",
@@ -47,7 +49,7 @@ export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
     // HANDLE DELETE ISSUE
     const handleDeleteIssue = async () => {
         try {
-            const data = await deleteIssue(axiosPrivate, issue?.id);
+            await deleteIssue(axiosPrivate, issue?.id);
             const newIssues = issues.filter((item) => item.id !== issue?.id);
             dispatch(setIssues(newIssues));
         } catch (error) {
@@ -97,6 +99,34 @@ export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    // HANDLE DOWNLOAD ATTACHMENT
+    const handleDownloadAttachment = async () => {
+        try {
+            const data = await downloadIssueAttachment(axiosPrivate, attachment.id);
+
+            // create url for file
+            const url = window.URL.createObjectURL(new Blob([data]));
+            // create download link
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', attachment.fileName);
+            document.body.appendChild(link);
+            link.click();
+
+            // clean up
+            link.remove();
+            window.URL.createObjectURL(url);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    // HANDLE DELETE ISSUE ATTACHMENT
+    const handleDeleteIssueAttachment = async () => {
+        await deleteIssueAttachment(axiosPrivate, issue.id, attachment.id);
+        dispatch(setAttachment(null));
+    }
+
     if (isLoading) {
         return <Loading />
     }
@@ -134,12 +164,7 @@ export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
                 {/* UPPER BUTTONS */}
                 <div className="flex gap-2">
                     {/* ATTACH */}
-                    <Button variant="secondary" className="">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13" />
-                        </svg>
-                        Attach
-                    </Button>
+                    <FileUpload />
 
                     {/* SELECT TODO STATUS */}
                     <Select onValueChange={(e) => setFormData({ ...formData, status: e })}>
@@ -157,6 +182,21 @@ export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
+                </div>
+
+                {/* SHOW ATTACHMENT */}
+                <div className="">
+                    <span className='flex gap-2 max-w-[50px]'>
+                        {
+                            attachment &&
+                            <div className="flex justify-between p-2 border border-slate-300 text-sm font-light bg-gray-100">
+                                <span className='cursor-pointer' onClick={handleDownloadAttachment}>
+                                    {attachment.fileName.slice(14, attachment.fileName.length)}
+                                </span>
+                                <span className="cursor-pointer" onClick={handleDeleteIssueAttachment}> ❌ </span>
+                            </div>
+                        }
+                    </span>
                 </div>
                 <div className="">
                     {/* DESCRIPTION */}
