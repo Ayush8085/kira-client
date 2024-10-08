@@ -6,6 +6,7 @@ import { getProjectUsers } from "@/services/projectAPI"
 import { Loading } from "@/utils/Loading"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
 
 export const Users = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,11 +25,10 @@ export const Users = () => {
     setIsLoading(true);
     try {
       const data = await getProjectUsers(axiosPrivate, project.id);
-      console.log("DATA: ", data);
       dispatch(setProjectUsers(data.project_users));
       dispatch(setOtherUsers(data.other_users));
     } catch (error) {
-      console.log(error);
+      toast.error(error as string);
     } finally {
       setIsLoading(false);
     }

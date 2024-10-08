@@ -4,6 +4,7 @@ import { updateIssue } from "@/services/issueAPI";
 import { Loading } from "@/utils/Loading";
 import React, { createContext, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 export const DragContext = createContext({});
 
@@ -28,7 +29,7 @@ export const DragProvider = ({ children }: { children: React.ReactNode }) => {
             })
             dispatch(setIssues(updatedIssues));
         } catch (error) {
-            console.log(error);
+            toast.error(error as string);
         } finally {
             setIsLoading(false);
         }

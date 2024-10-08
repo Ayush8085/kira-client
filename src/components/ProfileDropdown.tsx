@@ -15,11 +15,12 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import React, { useState } from "react"
+import React from "react"
 import { logoutUser } from "@/services/authAPI";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut, selectCurrentUser } from "@/features/auth/authSlice";
+import { toast } from "react-toastify";
 
 export function ProfileDowndown({ children }: { children: React.ReactNode }) {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ export function ProfileDowndown({ children }: { children: React.ReactNode }) {
             dispatch(logOut(null));
             navigate("/login");
         } catch (error) {
-            console.error(error);
+            toast.error(error as string);
         }
     };
 

@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setAccessToken, setCredentials } from '@/features/auth/authSlice';
 import { Loading } from '@/utils/Loading';
 import { loginUser, registerUser } from '@/services/authAPI';
+import { toast } from 'react-toastify';
 
 export const AuthForm = ({ h1_text, description, form_type }: { h1_text: string, description: string, form_type: string }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +27,7 @@ export const AuthForm = ({ h1_text, description, form_type }: { h1_text: string,
       const data = await loginUser(inputs);
       if (!data) {
         setIsLoading(false);
-        console.log("Invalid credentials");
+        toast.error("Invalid credentials");
         navigate("/login");
       }
       await dispatch(setCredentials(data.user));
@@ -35,7 +36,7 @@ export const AuthForm = ({ h1_text, description, form_type }: { h1_text: string,
       navigate("/");
     }
     catch (err) {
-      console.error(err);
+      toast.error(err as string);
     }
   }
 
@@ -43,14 +44,14 @@ export const AuthForm = ({ h1_text, description, form_type }: { h1_text: string,
     e.preventDefault();
     setIsLoading(true);
     if (inputs.password !== inputs.password2) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
     try {
       const data = await registerUser(inputs);
       if (!data) {
         setIsLoading(false);
-        console.log("Invalid credentials");
+        toast.error("Invalid credentials");
         navigate("/signup");
       }
       await dispatch(setCredentials(data.user));
@@ -59,7 +60,7 @@ export const AuthForm = ({ h1_text, description, form_type }: { h1_text: string,
       navigate("/");
     }
     catch (err) {
-      console.error(err);
+      toast.error(err as string);
     }
   }
 

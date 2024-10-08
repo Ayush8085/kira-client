@@ -17,7 +17,6 @@ export const IssueCard = ({ title, index, description, issueId }: { title: strin
 
     const getIssueHere = async () => {
         const data = await getIssue(axiosPrivate, issues[index].id);
-        console.log("THSI IS IT: ", data);
         dispatch(setIssue(data.issue));
         dispatch(setAttachment(data.attachment));
     }

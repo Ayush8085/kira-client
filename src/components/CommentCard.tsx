@@ -1,12 +1,5 @@
-import { useEffect } from "react"
-
 
 export const CommentCard = ({ comment, handleDeleteComment }: { comment: any, handleDeleteComment: any }) => {
-
-    useEffect(() => {
-        console.log("comment: ", comment);
-
-    }, []);
 
     return (
         <section className="w-full p-4 flex justify-between ">

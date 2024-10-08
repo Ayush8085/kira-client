@@ -22,11 +22,9 @@ const FileUpload = () => {
         if (files.length > 0) {
             const file = files[0];
             const formData = new FormData();
-            console.log("Selected file:", file);
             formData.append("attachment", file);
             // Here you can handle the file upload logic, e.g., send it to a server
             const data = await attachToIssue(axiosPrivate, issue.id, formData);
-            console.log("Data: ", data);
             dispatch(setAttachment(data.attachment));
         }
     };

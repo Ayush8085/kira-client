@@ -5,6 +5,7 @@ import { Loading } from '@/utils/Loading';
 import React, { createContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export const AuthContext = createContext({});
 
@@ -29,10 +30,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     dispatch(setIsLoggedIn(data.isLoggedIn));
                     navigate('/');
                 } else {
-                    console.error('No data returned from getLoggedInUser');
+                    toast.error('Token expired please login again');
                 }
             } catch (error) {
-                console.error('Error getting logged in user: ', error);
+                toast.error('Error getting logged in user: ' + error);
                 navigate('/login');
             } finally {
                 setIsLoading(false);

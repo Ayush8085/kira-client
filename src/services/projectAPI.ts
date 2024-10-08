@@ -1,4 +1,5 @@
 import { BASE_URL } from "@/App";
+import { toast } from "react-toastify";
 
 // -------------- CREATE PROJECT ---------------
 export const createProject = async (axiosPrivate: any, data: any) => {
@@ -7,7 +8,7 @@ export const createProject = async (axiosPrivate: any, data: any) => {
         return response.data;
     }
     catch (err) {
-        console.error(err);
+        toast.error(err as string);
     }
 }
 
@@ -18,7 +19,7 @@ export const getProjectsOfUser = async (axiosPrivate: any) => {
         return response.data;
     }
     catch (err) {
-        console.error(err);
+        toast.error(err as string);
     }
 }
 
@@ -29,7 +30,7 @@ export const getProject = async (axiosPrivate: any, id: string) => {
         return response.data;
     }
     catch (err) {
-        console.error(err);
+        toast.error(err as string);
     }
 }
 
@@ -37,11 +38,10 @@ export const getProject = async (axiosPrivate: any, id: string) => {
 export const deleteProject = async (axiosPrivate: any, id: string) => {
     try {
         const response = await axiosPrivate.delete(`${BASE_URL}/projects/delete/${id}`);
-        console.log("delete-project-response: ", response.data);
         return response.data;
     }
     catch (err) {
-        console.error(err);
+        toast.error(err as string);
     }
 }
 
@@ -52,7 +52,7 @@ export const getProjectUsers = async (axiosPrivate: any, projectId: string) => {
         return response.data;
     }
     catch (err) {
-        console.error(err);
+        toast.error(err as string);
     }
 }
 
@@ -63,6 +63,6 @@ export const changeRole = async (axiosPrivate: any, projectId: string, data: any
         return response.data;
     }
     catch (err) {
-        console.error(err);
+        toast.error(err as string);
     }
 }

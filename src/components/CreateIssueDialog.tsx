@@ -18,6 +18,7 @@ import { Select, SelectGroup, SelectItem, SelectLabel, SelectContent, SelectTrig
 import { createIssue } from "@/services/issueAPI"
 import { useParams } from "react-router-dom"
 import { selectIssues, setIssues } from "@/features/issueSlice"
+import { toast } from "react-toastify"
 
 export function CreateIssueDialog({ children }: { children: React.ReactNode }) {
     const [open, setOpen] = useState(false);
@@ -25,7 +26,7 @@ export function CreateIssueDialog({ children }: { children: React.ReactNode }) {
     const dispatch = useDispatch();
     const issues = useSelector(selectIssues);
     const axiosPrivate = useAxiosPrivate();
-    const { projectId } = useParams();
+    const { projectId } = useParams<{ projectId: string }>();
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -42,20 +43,17 @@ export function CreateIssueDialog({ children }: { children: React.ReactNode }) {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(formData);
         setIsLoading(true);
         try {
             if (formData.title === "" || formData.key === "") {
-                alert("Please fill in all required fields");
+                toast.error("Please fill in all required fields");
                 return;
             }
-            console.log("FORM DATA: ", formData);
             const data = await createIssue(axiosPrivate, projectId, formData);
-            console.log("HERLERLEKRE: ", data);
             const newIssues = [...issues, data.issue];
             dispatch(setIssues(newIssues));
         } catch (err) {
-            console.log(err);
+            toast.error(err as string);
         } finally {
             setIsLoading(false);
             setFormData({

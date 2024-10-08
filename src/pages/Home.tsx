@@ -5,9 +5,10 @@ import { selectProjects, setProject, setProjects } from "@/features/projectSlice
 import { useAxiosPrivate } from "@/hooks/useAxiosPrivate";
 import { deleteProject, getProject, getProjectsOfUser } from "@/services/projectAPI";
 import { Loading } from "@/utils/Loading";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +24,7 @@ const Home = () => {
         const data = await getProjectsOfUser(axiosPrivate);
         dispatch(setProjects(data.projects));
       } catch (error) {
-        console.error(error);
+        toast.error(error as string);
       } finally {
         setIsLoading(false);
       }
@@ -39,7 +40,7 @@ const Home = () => {
       dispatch(setProject(data.project));
       navigate(`/projects/${projectId}`);
     } catch (error) {
-      console.error(error);
+      toast.error(error as string);
     } finally {
       setIsLoading(false);
     }
@@ -52,7 +53,7 @@ const Home = () => {
       const newProjects = projects.filter((project: any) => project.id !== projectId);
       dispatch(setProjects(newProjects));
     } catch (error) {
-      console.error(error);
+      toast.error(error as string);
     } finally {
       setIsLoading(false);
     }

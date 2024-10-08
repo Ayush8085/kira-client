@@ -16,6 +16,7 @@ import { createProject } from "@/services/projectAPI"
 import { Loading } from "@/utils/Loading"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
 
 export function CreateProjectDialog({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -37,20 +38,18 @@ export function CreateProjectDialog({ children }: { children: React.ReactNode })
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
     if (formData.title === "" || formData.key === "") {
-      alert("Please fill in all fields");
+      toast.error("Please fill in all fields");
       return;
     }
 
     setIsLoading(true);
     try {
       const data = await createProject(axiosPrivate, formData);
-      console.log("HELLO: ", data);
       const newProjects = [...projects, data.project];
       dispatch(setProjects(newProjects));
     } catch (err) {
-      console.log(err);
+      toast.error(err as string);
     } finally {
       setFormData({
         title: "",

@@ -9,6 +9,7 @@ import { Loading } from "@/utils/Loading";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const Project = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -24,12 +25,10 @@ export const Project = () => {
     const getIssuesHere = async () => {
         setIsLoading(true);
         try {
-            console.log("PROEJCTID: ", projectId);
             const data = await getIssues(axiosPrivate, projectId);
-            console.log("HERER: ", data);
             dispatch(setIssues(data.issues));
         } catch (error) {
-            console.log(error);
+            toast.error(error as string);
         } finally {
             setIsLoading(false);
         }

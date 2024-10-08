@@ -15,6 +15,7 @@ import { CommentCard } from './CommentCard'
 import { createComment, deleteComment } from '@/services/commentAPI'
 import { selectComments, setComments } from '@/features/commentSlice'
 import FileUpload from './FileUpload'
+import { toast } from 'react-toastify'
 
 export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
     const [openEdit, setOpenEdit] = useState(false);
@@ -53,7 +54,7 @@ export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
             const newIssues = issues.filter((item) => item.id !== issue?.id);
             dispatch(setIssues(newIssues));
         } catch (error) {
-            console.log(error);
+            toast.error(error as string);
         }
     }
 
@@ -66,7 +67,7 @@ export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
             newIssues.push(data.issue);
             dispatch(setIssues(newIssues));
         } catch (error) {
-            console.log(error);
+            toast.error(error as string);
         } finally {
             setIsLoading(false);
         }
@@ -76,12 +77,11 @@ export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
     const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            console.log("commentValue: ", { "text": commentValue });
             const data = await createComment(axiosPrivate, issue?.id, { "text": commentValue });
             const newComments = comments.concat(data.comment);
             dispatch(setComments(newComments));
         } catch (error) {
-            console.log(error);
+            toast.error(error as string);
         } finally {
             setCommentValue("");
         }
@@ -91,11 +91,10 @@ export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
     const handleDeleteComment = async (comment: any) => {
         try {
             const data = await deleteComment(axiosPrivate, comment.id);
-            console.log("DELETE COMMENT: ", data);
             const newComments = comments.filter((item) => item.id !== comment.id);
             dispatch(setComments(newComments));
         } catch (error) {
-            console.log(error);
+            toast.error(error as string);
         }
     }
 
@@ -117,7 +116,7 @@ export const IssueDialog = ({ children }: { children: React.ReactNode }) => {
             link.remove();
             window.URL.createObjectURL(url);
         } catch (error) {
-            console.log(error);
+            toast.error(error as string);
         }
     }
 

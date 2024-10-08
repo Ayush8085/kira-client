@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { selectProject, setOtherUsers, setProjectUsers } from "@/features/projectSlice"
 import { changeRole } from "@/services/projectAPI"
 import { useAxiosPrivate } from "@/hooks/useAxiosPrivate"
+import { toast } from "react-toastify"
 
 export const UserCard = ({ user, userRole }: { user: any, userRole: string }) => {
   const project = useSelector(selectProject);
@@ -17,7 +18,7 @@ export const UserCard = ({ user, userRole }: { user: any, userRole: string }) =>
       dispatch(setProjectUsers(data.project_users));
       dispatch(setOtherUsers(data.other_users));
     } catch (error) {
-      console.log(error);
+      toast.error(error as string);
     }
   }
 

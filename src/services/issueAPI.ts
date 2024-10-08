@@ -1,13 +1,13 @@
 import { BASE_URL } from "@/App";
+import { toast } from "react-toastify";
 
 // ------------- CREATE ISSUE ---------------
 export const createIssue = async (axiosPrivate: any, projectId: string, data: any) => {
     try {
         const response = await axiosPrivate.post(`${BASE_URL}/issues/create/${projectId}`, data);
-        console.log("create-issue-response: ", response.data);
         return response.data;
     } catch (err) {
-        console.error(err);
+        toast.error(err as string);
     }
 };
 
@@ -15,10 +15,9 @@ export const createIssue = async (axiosPrivate: any, projectId: string, data: an
 export const getIssue = async (axiosPrivate: any, issueId: string) => {
     try {
         const response = await axiosPrivate.get(`${BASE_URL}/issues/get/${issueId}`);
-        console.log("get-issue-response: ", response.data);
         return response.data;
     } catch (err) {
-        console.error(err);
+        toast.error(err as string);
     }
 };
 
@@ -26,10 +25,9 @@ export const getIssue = async (axiosPrivate: any, issueId: string) => {
 export const getIssues = async (axiosPrivate: any, projectId: string) => {
     try {
         const response = await axiosPrivate.get(`${BASE_URL}/issues/get-all/${projectId}`);
-        console.log("get-issues-response: ", response.data);
         return response.data;
     } catch (err) {
-        console.error(err);
+        toast.error(err as string);
     }
 };
 
@@ -37,10 +35,9 @@ export const getIssues = async (axiosPrivate: any, projectId: string) => {
 export const deleteIssue = async (axiosPrivate: any, issueId: string) => {
     try {
         const response = await axiosPrivate.delete(`${BASE_URL}/issues/delete/${issueId}`);
-        console.log("delete-issue-response: ", response.data);
         return response.data;
     } catch (err) {
-        console.error(err);
+        toast.error(err as string);
     }
 };
 
@@ -48,10 +45,9 @@ export const deleteIssue = async (axiosPrivate: any, issueId: string) => {
 export const updateIssue = async (axiosPrivate: any, issueId: string, data: any) => {
     try {
         const response = await axiosPrivate.put(`${BASE_URL}/issues/update/${issueId}`, data);
-        console.log("update-issue-response: ", response.data);
         return response.data;
     } catch (err) {
-        console.error(err);
+        toast.error(err as string);
     }
 }
 
@@ -63,10 +59,9 @@ export const attachToIssue = async (axiosPrivate: any, issueId: string, data: an
                 "Content-Type": "multipart/form-data",
             },
         });
-        console.log("attach-issue-response: ", response.data);
         return response.data;
     } catch (err) {
-        console.error(err);
+        toast.error(err as string);
     }
 }
 
@@ -76,20 +71,18 @@ export const downloadIssueAttachment = async (axiosPrivate: any, attachmentId: s
         const response = await axiosPrivate.get(`${BASE_URL}/issues/attachment/${attachmentId}`, {
             responseType: "blob",
         });
-        console.log("download-attachment-response: ", response.data);
         return response.data;
     } catch (err) {
-        console.error(err);
+        toast.error(err as string);
     }
 }
- 
+
 // ------------- DELETE ATTACHMENT -------------
-export const deleteIssueAttachment = async(axiosPrivate: any, issueId: string, attachmentId: string) => {
+export const deleteIssueAttachment = async (axiosPrivate: any, issueId: string, attachmentId: string) => {
     try {
         const response = await axiosPrivate.delete(`${BASE_URL}/issues/attachment/${issueId}/${attachmentId}`);
-        console.log("delete-attachment-response", response.data);
         return response.data;
     } catch (err) {
-        console.error(err);        
+        toast.error(err as string);
     }
 }
