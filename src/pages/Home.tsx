@@ -50,7 +50,7 @@ const Home = () => {
     setIsLoading(true);
     try {
       await deleteProject(axiosPrivate, projectId);
-      const newProjects = projects.filter((project: any) => project.id !== projectId);
+      const newProjects = projects.filter((project: any) => project.project.id !== projectId);
       dispatch(setProjects(newProjects));
     } catch (error) {
       toast.error(error as string);
