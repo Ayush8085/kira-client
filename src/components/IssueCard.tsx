@@ -35,7 +35,8 @@ export const IssueCard = ({ title, index, description, issueId }: { title: strin
                 onDragEnd={() => setActiveCard(null)}
                 className="w-full min-h-[80px] border-2 rounded-xl  cursor-grab active:opacity-70 active:border-slate-700 p-4"
             >
-                <p className="text-xl">{title}</p>
+                <p className="text-xl font-semibold">{title}</p>
+                <p className="text-neutral-500">{description}</p>
             </article>
         </IssueDialog>
     )

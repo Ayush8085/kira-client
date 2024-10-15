@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from './ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTrigger } from './ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from './ui/dialog'
 import { Label } from './ui/label'
 import { Textarea } from './ui/textarea'
 import { DialogTitle } from '@radix-ui/react-dialog'
