@@ -2,17 +2,22 @@ import { useRef } from 'react';
 import { Button } from './ui/button';
 import { attachToIssue } from '@/services/issueAPI';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectIssue, setAttachment } from '@/features/issueSlice';
+import { selectAttachment, selectIssue, setAttachment } from '@/features/issueSlice';
 import { useAxiosPrivate } from '@/hooks/useAxiosPrivate';
+import { toast } from 'react-toastify';
 
 const FileUpload = () => {
     const issue = useSelector(selectIssue);
     const axiosPrivate = useAxiosPrivate();
     const fileInputRef = useRef(null);
+    const attachment = useSelector(selectAttachment);
     const dispatch = useDispatch();
 
     const handleButtonClick = () => {
-        if (fileInputRef.current !== null) {
+        if (attachment) {
+            toast.error("Only one attachment per issue allowed. Please delete previous attachment and try again.");
+        }
+        else if (fileInputRef.current !== null) {
             fileInputRef.current.click(); // Trigger the file input click
         }
     };
