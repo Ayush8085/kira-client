@@ -24,7 +24,7 @@ export const Users = () => {
   const getProjectUsersHere = async () => {
     setIsLoading(true);
     try {
-      const data = await getProjectUsers(axiosPrivate, project.id);
+      const data = await getProjectUsers(axiosPrivate, project.project.id);
       dispatch(setProjectUsers(data.project_users));
       dispatch(setOtherUsers(data.other_users));
     } catch (error) {
